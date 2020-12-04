@@ -1,3 +1,2 @@
-dist
-bazel-out
+bazel-*
 node_modules
