@@ -1,0 +1,13 @@
+load("@build_bazel_rules_nodejs//:index.bzl", "nodejs_binary")
+load("@npm//@bazel/typescript:index.bzl", "ts_project")
+
+ts_project(
+    name = "renderer_lib",
+    srcs = ["renderer.ts"],
+    tsconfig = {},
+)
+
+nodejs_binary(
+    name = "renderer",
+    entry_point = ":renderer_lib",
+)
