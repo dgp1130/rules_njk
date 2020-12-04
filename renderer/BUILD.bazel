@@ -37,5 +37,6 @@ ts_project(
 
 jasmine_node_test(
     name = "renderer_test",
+    data = [":renderer"],
     deps = [":renderer_test_lib"],
 )
