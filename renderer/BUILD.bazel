@@ -6,10 +6,14 @@ ts_project(
     srcs = ["renderer.ts"],
     tsconfig = "//:tsconfig",
     source_map = True,
-    deps = ["@npm//@types/node"],
+    deps = [
+        "@npm//@types/node",
+        "@npm//@types/nunjucks",
+    ],
 )
 
 nodejs_binary(
     name = "renderer",
     entry_point = ":renderer.js",
+    data = ["@npm//nunjucks"],
 )
