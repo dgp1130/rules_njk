@@ -1,2 +1,9 @@
-# Add rules here to build your software
-# See https://docs.bazel.build/versions/master/build-ref.html#BUILD_files
+load("@npm//@bazel/typescript:index.bzl", "ts_config")
+
+# Default tsconfig.json file. Should be directly used or at least extended for
+# all TypeScript compilations in the workspace.
+ts_config(
+    name = "tsconfig",
+    src = "tsconfig.json",
+    visibility = ["//visibility:public"],
+)

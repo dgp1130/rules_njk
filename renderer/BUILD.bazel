@@ -4,10 +4,12 @@ load("@npm//@bazel/typescript:index.bzl", "ts_project")
 ts_project(
     name = "renderer_lib",
     srcs = ["renderer.ts"],
-    tsconfig = {},
+    tsconfig = "//:tsconfig",
+    source_map = True,
+    deps = ["@npm//@types/node"],
 )
 
 nodejs_binary(
     name = "renderer",
-    entry_point = ":renderer_lib",
+    entry_point = ":renderer.js",
 )
