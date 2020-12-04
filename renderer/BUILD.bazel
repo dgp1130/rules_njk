@@ -9,11 +9,15 @@ ts_project(
     deps = [
         "@npm//@types/node",
         "@npm//@types/nunjucks",
+        "@npm//@types/yargs",
     ],
 )
 
 nodejs_binary(
     name = "renderer",
     entry_point = ":renderer.js",
-    data = ["@npm//nunjucks"],
+    data = [
+        "@npm//nunjucks",
+        "@npm//yargs",
+    ],
 )
