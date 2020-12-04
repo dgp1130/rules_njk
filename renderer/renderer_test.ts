@@ -14,9 +14,12 @@ const runfiles = process.env['RUNFILES']!;
 if (!runfiles) fail('$RUNFILES not set.');
 
 const renderer = `${runfiles}/rules_njk/renderer/renderer.sh`;
-async function run(template: string):
+async function run(template: string, output: string):
         Promise<{ stdout: string, stderr: string }> {
-    return await execFile(renderer, [ '--template', template ]);
+    return await execFile(renderer, [
+        '--template', template,
+        '--output', output,
+    ]);
 }
 
 describe('renderer', () => {
@@ -33,8 +36,16 @@ describe('renderer', () => {
             Hello, {{ name }}!
         `.trim());
 
-        const { stdout } = await run(`${tmpDirPath}/foo.njk`);
+        const { stdout, stderr } = await run(
+            `${tmpDirPath}/foo.njk`,
+            `${tmpDirPath}/foo.html`,
+        );
+
+        const generated = await fs.readFile(`${tmpDirPath}/foo.html`, 'utf8');
         
-        expect(stdout.trim()).toBe('Hello, World!');
+        expect(generated.trim()).toBe('Hello, World!');
+
+        expect(stdout.trim()).toBe('');
+        expect(stderr.trim()).toBe('');
     });
 });
