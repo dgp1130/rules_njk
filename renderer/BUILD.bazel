@@ -17,6 +17,7 @@ ts_project(
 nodejs_binary(
     name = "renderer",
     entry_point = ":renderer.js",
+    visibility = ["//visibility:public"],
     data = [
         "@npm//nunjucks",
         "@npm//yargs",

@@ -1,0 +1,13 @@
+load("@bazel_skylib//rules:build_test.bzl", "build_test")
+load(":njk_template.bzl", "njk_template")
+
+njk_template(
+    name = "example",
+    template = "example.njk",
+)
+
+# TODO: This should compare with a golden file.
+build_test(
+    name = "example_build_test",
+    targets = [":example"],
+)
