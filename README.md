@@ -16,7 +16,7 @@ load("@npm//@bazel/typescript:index.bzl", "ts_project")
 # Compile `about.njk` to `about.html` with data from `:person`.
 njk_template(
     name = "about",
-    temple = "about.njk",
+    template = "about.njk",
     deps = [":person"],
 )
 
