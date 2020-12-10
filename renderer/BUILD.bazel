@@ -1,35 +1,21 @@
 load("@build_bazel_rules_nodejs//:index.bzl", "nodejs_binary")
-load("@npm//@bazel/typescript:index.bzl", "ts_project")
+load("@npm//@bazel/typescript:index.bzl", "ts_library")
 load("@npm//@bazel/jasmine:index.bzl", "jasmine_node_test")
-
-ts_project(
-    name = "renderer_lib",
-    srcs = ["renderer.ts"],
-    tsconfig = "//:tsconfig",
-    source_map = True,
-    deps = [
-        "@npm//@types/node",
-        "@npm//@types/nunjucks",
-        "@npm//@types/yargs",
-    ],
-)
 
 nodejs_binary(
     name = "renderer",
-    entry_point = ":renderer.js",
+    entry_point = ":renderer.ts",
     visibility = ["//visibility:public"],
     data = [
+        ":renderer_lib",
         "@npm//nunjucks",
         "@npm//yargs",
     ],
 )
 
-ts_project(
-    name = "renderer_test_lib",
-    srcs = ["renderer_test.ts"],
-    tsconfig = "//:tsconfig",
-    source_map = True,
-    testonly = True,
+ts_library(
+    name = "renderer_e2e_test_lib",
+    srcs = ["renderer_e2e_test.ts"],
     deps = [
         "@npm//@types/jasmine",
         "@npm//@types/node",
@@ -37,7 +23,43 @@ ts_project(
 )
 
 jasmine_node_test(
-    name = "renderer_test",
+    name = "renderer_e2e_test",
     data = [":renderer"],
-    deps = [":renderer_test_lib"],
+    deps = [":renderer_e2e_test_lib"],
+)
+
+ts_library(
+    name = "renderer_lib",
+    srcs = ["renderer.ts"],
+    deps = [
+        ":loader",
+        "@npm//@types/node",
+        "@npm//@types/nunjucks",
+        "@npm//@types/yargs",
+    ],
+)
+
+ts_library(
+    name = "loader",
+    srcs = ["loader.ts"],
+    deps = [
+        "@npm//@types/node",
+        "@npm//@types/nunjucks",
+    ],
+)
+
+ts_library(
+    name = "loader_test_lib",
+    srcs = ["loader_test.ts"],
+    deps = [
+        ":loader",
+        "@npm//@types/jasmine",
+        "@npm//@types/node",
+        "@npm//@types/nunjucks",
+    ],
+)
+
+jasmine_node_test(
+    name = "loader_test",
+    deps = [":loader_test_lib"],
 )

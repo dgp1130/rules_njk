@@ -1,0 +1,7 @@
+{% import "build_defs/transitive.njk" as transitive %}
+
+{% macro hello() %}
+    <h2>Hello!</h2>
+
+    {{ transitive.thing() }}
+{% endmacro %}

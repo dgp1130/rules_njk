@@ -1,1 +1,8 @@
+{% import "build_defs/library.njk" as library %}
+{% import "build_defs/generated.njk" as generated %}
+
 Hello, {{ name }}!
+
+{{ library.hello() }}
+
+{{ generated.something() }}

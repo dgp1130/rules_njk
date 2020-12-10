@@ -4,6 +4,42 @@ load(":njk_template.bzl", "njk_template")
 njk_template(
     name = "example",
     template = "example.njk",
+    deps = [
+        ":library",
+        ":generated",
+    ],
+)
+
+# Directly depend on a library template.
+njk_template(
+    name = "library",
+    template = "library.njk",
+    deps = [":transitive"],
+)
+
+# Transitively depend on a library template file.
+njk_template(
+    name = "transitive",
+    template = "transitive.njk",
+)
+
+# Generate a template file to verify that sources under `bazel-out/` can still
+# be used.
+genrule(
+    name = "generated_template",
+    srcs = [],
+    outs = ["generated.njk"],
+    cmd = """
+        echo "{% macro something() %}\n" \\
+             "  <h2>Generated!</h2>\n" \\
+             "{% endmacro %}" \\
+        > $@
+    """,
+)
+
+njk_template(
+    name = "generated",
+    template = "generated.njk",
 )
 
 # TODO: This should compare with a golden file.
